@@ -2,7 +2,7 @@
 //!
 //! Mirrors the ANALOG_SPLINE implementation in constraint-theory-llvm.
 
-use nalgebra::{Vector2, Point2};
+use nalgebra::Point2;
 
 use crate::beam::BeamConfig;
 use crate::solvers::Solver;
@@ -43,8 +43,6 @@ impl Solver for BezierSolver {
 
             // Curvature: κ = |x'y'' - y'x''| / (x'² + y'²)^(3/2)
             // Second derivative of quadratic Bézier is constant: B''(t) = 2(P2 - 2P1 + P0)
-            let dx_dy = p1.y - p0.y;
-            let dy_dx = p1.x - p0.x;
             let d2x = 2.0 * (p2.x - 2.0 * p1.x + p0.x);
             let d2y = 2.0 * (p2.y - 2.0 * p1.y + p0.y);
 
