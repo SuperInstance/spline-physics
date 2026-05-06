@@ -531,3 +531,98 @@ The goal is not to optimize the model—it's to understand it well enough to mak
 ---
 
 *This document is speculative. Many ideas are unproven. The hope is that they generate productive experiments, not that they are immediately correct.*
+
+---
+
+## 12. MRI Mathematics — Contrast Imaging as Differential Resonance Mapping
+
+The MRI parallel is not metaphorical — it's mathematically precise. Here's how it works:
+
+### 12.1 The Core Physics
+
+MRI maps the **relaxation rates** of hydrogen nuclei (protons in water) in a magnetic field. When you apply a radiofrequency pulse, protons absorb energy and then **relax** back to equilibrium by releasing that energy as a signal. The rate at which they relax — T1 (spin-lattice) and T2 (spin-spin) — depends on the molecular environment around the water.
+
+- **T1-weighted imaging**: Measures how fast protons relax along the main magnetic field axis. Tissues with different water content and molecular environment relax at different rates.
+- **T2-weighted imaging**: Measures how fast protons lose phase coherence with their neighbors. Fluid appears bright (long T2), fat appears dark.
+
+### 12.2 The Contrast Agent — Gadolinium
+
+Gadolinium (Gd-DTPA) is a paramagnetic contrast agent. It doesn't show up on its own — it **alters the relaxation environment** of nearby water protons. Specifically, Gd shortens T1 and T2 relaxation times in proportion to its concentration.
+
+When you inject Gd and take a second scan:
+- Regions with **intact blood-brain barrier (BBB)** → Gd stays in vasculature → minimal extravascular signal
+- Regions with **BBB disruption** (tumors, inflammation, MS lesions) → Gd leaks into interstitial space → bright enhancement
+
+**The contrast is the DIFFERENCE between pre- and post-Gd images.** Neither image alone tells you about BBB permeability. The difference map reveals it.
+
+### 12.3 Why Comparison Is the Information
+
+**A - B = information that neither A nor B contains.** Let:
+- I₁ = pre-contrast image
+- I₂ = post-contrast image  
+- Δ = I₂ - I₁ (contrast enhancement map)
+
+Δ reveals: angiogenesis, active inflammation, tumor grade, treatment response. None visible in I₁ alone or I₂ alone. The comparison IS the data.
+
+This is the same structure as:
+- **Differential gene expression**: gene (treated) - gene (control) = drug effect
+- **Seismic interferometry**: cross-correlate ambient noise → Green's function between two receivers (difference reveals what neither recording alone contains)
+
+### 12.4 DWI (Diffusion-Weighted Imaging) — Brownian Motion as Contrast
+
+DWI measures the **Brownian motion** of water molecules. In unrestricted space, water diffuses isotropically. In structured tissue (neurons, cellular membranes, tumors), diffusion is **anisotropic** — it follows the structure.
+
+- **ADC (Apparent Diffusion Coefficient)**: Scalar measure of diffusion magnitude. CSF flows freely → high ADC (bright). Solid tumors restrict diffusion → low ADC (dark).
+- **DTI (Diffusion Tensor Imaging)**: Full tensor D that captures directional diffusion. The **principal eigenvector** gives the dominant fiber tract orientation.
+
+Mathematically: D = [[Dxx, Dxy, Dxz], [Dxy, Dyy, Dyz], [Dxz, Dyz, Dzz]]. The eigenvalues λ1 ≥ λ2 ≥ λ3 reveal microstructure:
+- λ1 ≈ λ2 ≈ λ3 (isotropic) → unrestricted diffusion (CSF, edema)
+- λ1 >> λ2 ≈ λ3 (anisotropic) → directed structure (axon tracts)
+
+**Fractional Anisotropy (FA)** = sqrt(½((λ1-λ2)² + (λ1-λ3)² + (λ2-λ3)²) / (λ1² + λ2² + λ3²)) measures how directed diffusion is. FA ≈ 0 = isotropic, FA ≈ 1 = highly anisotropic.
+
+### 12.5 Perfusion Imaging — Dynamic Susceptibility Contrast (DSC)
+
+DSC injects a Gd bolus and rapidly images every 1-2 seconds as contrast passes through the vasculature. You get a **time-intensity curve** at each voxel:
+- **CBV** (Cerebral Blood Volume): total blood volume (integral under the curve)
+- **CBF** (Cerebral Blood Flow): rate of blood flow (peak height or initial slope)
+- **MTT** (Mean Transit Time): average time contrast spends in the region = CBV/CBF
+
+Derived from **indicator dilution theory**: the area under the concentration-time curve equals CBV/CBF. This is the same math as tracer kinetics in nuclear medicine.
+
+### 12.6 The Key Insight for Resonance Probing
+
+| MRI Concept | Resonance Probe Analogy |
+|---|---|
+| T1/T2 relaxation | Response decay patterns (activation over time) |
+| Gd contrast agent | Seed variation or attention masking |
+| Pre-contrast image | Baseline response (no perturbation) |
+| Post-contrast image | Perturbed response |
+| Δ = I₂ - I₁ | Resonance difference map |
+| CBV/CBF perfusion | Capacity metrics (attention flow through pathways) |
+| DWI/DTI anisotropy | Directionality of reasoning paths |
+| DSC time curves | Response time-series to perturbation |
+
+### 12.7 The Fundamental Theorem of Contrast Imaging
+
+**If A and B are two states of a system, then (B - A) contains information that neither A nor B contains individually.**
+
+This is the basis of:
+- MRI contrast agents (Gd for T1/T2, DWI for diffusion)
+- Differential gene expression (RNA-seq treated vs control)
+- Seismic interferometry (ambient noise cross-correlations)
+- Photoelastic stress imaging (polarized light before and under load)
+- fMRI BOLD (neural activity difference)
+
+For LLM probing: **every comparison is a contrast image.** The difference between how a model responds to two different seeds reveals its internal structure — structure neither response alone shows.
+
+### 12.8 Resonance-Weighted Imaging Proposal
+
+Design an experiment analogous to DSC perfusion:
+
+1. **Inject** (tap) a specific prompt with N varying seeds → time-series of responses
+2. **Curve** for each pathway: how does activation flow through attention heads, layers, MLP neurons?
+3. **Derive**: like CBV, total "activation volume" each pathway can sustain; like CBF, information processing rate; like MTT, average time information spends in each layer
+4. **Contrast**: compare perfusion metrics between normal prompts vs adversarial prompts vs role-playing prompts
+
+This reveals which pathways are **hyperperfused** (overly dominant, like a tumor's angiogenesis) vs **hypoperfused** (suppressed, like ischemic stroke). Interventions tracked by watching perfusion maps change.
