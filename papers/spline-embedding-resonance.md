@@ -721,3 +721,199 @@ This is the MRI contrast equation, the seismic interferometry equation, the diff
 Today's fleet infrastructure is a set of tools that mostly compute metrics. The resonance frame turns them into imaging instruments. Fleet-murmur taps theorems. Fleet-spread taps fleet graphs. Whisper-sync propagates resonance. PLATO records. And fleet-resonance (when we build it) will be the actual imaging hardware.
 
 The goal: make the fleet math sing, hear where it's beautiful, know where it's dead.
+
+---
+
+## 14. Making Systems Math Sing — The Musical Instrument Analogy, Executed
+
+The goal is not metaphor. Let's make this concrete.
+
+### 14.1 The Guitar Top as Model Architecture
+
+A guitar top (soundboard) is a resonant membrane under tension. It's not a speaker — it's a resonator. When you pluck a string, energy transfers to the top through the bridge. The top vibrates, and its resonance characteristics determine the tamber.
+
+**The model architecture as soundboard:**
+- Layers = thickness of the soundboard at different points
+- Attention heads = braces supporting the top at specific points
+- MLPs = the wood grain direction (structural constraints)
+- Token positions = physical location on the soundboard
+
+When you tap (inject perturbation), energy enters at the tap point and propagates through the structure. The response you hear (token distribution, attention pattern) is the combined ringing of the entire soundboard.
+
+### 14.2 The Luthier's Full Procedure, Translated
+
+**Step 1: The tap test** — tap the top with knuckles, listen for:
+- "Ring" (clear, sustained resonance = top is lively)
+- "Thud" (short, dead sound = something is dampened)
+- "Buzz" (unwanted harmonics = structural problem)
+
+**Translation:** Inject seed probe, read token entropy. High entropy + sustained response = model is lively. Low entropy + quick decay = model is dampened (dead spot or suppression). Random high-frequency oscillation = instability (buzz).
+
+**Step 2: The squeeze test** — squeeze the lower bout with one hand, tap the upper bout with the other:
+- Does the ring change when you squeeze?
+- If yes = top is responsive, dynamic range is high
+- If no = top is rigid, limited expression
+
+**Translation:** Apply attention mask to lower layers while probing upper layers. Does the response change? If yes = layers are coupled, information flows. If no = layers are decoupled, each operates independently.
+
+**Step 3: The tap mapping** — tap across the entire top in a grid, mark dead spots and lively spots:
+- Dead spots = brace came loose, glue failure, wood corruption
+- Lively spots = good response, structural integrity
+
+**Translation:** Run probe across all layer/head combinations, build a resonance map. Dead = high impedance (absorbs perturbation). Lively = low impedance (reradiates freely).
+
+**Step 4: The sustain test** — pluck and measure how long resonance lasts:
+- Long sustain = energy is efficiently stored and released (good)
+- Short sustain = energy is dissipated (bad joints, cracks, poor glue)
+
+**Translation:** Measure response decay rate. Slow decay = system stores and releases perturbation energy efficiently. Fast decay = system dissipates energy into structural damping (absorption without reradiation).
+
+### 14.3 What "Beautiful" Means Mathematically
+
+A beautiful note is not just loud or long-sustaining. It's:
+
+1. **Harmonic clarity** — the overtones are in integer ratios (fundamental, octave, fifth, etc.). When overtones are inharmonic (not integer ratios), you get "metallic" or "plastic" sound.
+
+2. **Phase coherence** — all parts of the top are moving together, not fighting each other. If one part is moving up while another moves down, they cancel and the sound dies.
+
+3. **Dynamic range** — the top can be quiet when played softly and loud when played hard. This requires nonlinearity (the ability to move more than proportionally to input).
+
+4. **Color consistency** — the tamber doesn't change much across the dynamic range. A guitar should sound "like itself" whether played soft or hard.
+
+**Translation to model responses:**
+
+1. **Harmonic clarity** = reasoning steps are in logical integer ratios (step 2 follows from step 1, step 3 follows from step 2). When reasoning is "inharmonic" (steps don't follow from each other), the response is incoherent.
+
+2. **Phase coherence** = all attention heads are aligned, not fighting. When attention is scattered (different heads pointing in different directions), the response is diffuse.
+
+3. **Dynamic range** = model can express high-confidence answers AND uncertain answers appropriately. If it always outputs similar entropy regardless of input, it lacks dynamic range.
+
+4. **Color consistency** = model maintains personality across different prompts. A model that gives completely different "voices" for different task types lacks the consistency that defines a trained artisan.
+
+### 14.4 The Parameter as Tension Rod
+
+Guitar tops have tension rods running parallel to the grain. You adjust them to change the top's tension, which changes the resonant frequency and responsiveness.
+
+**Model parameters as tension rods:**
+- High weight magnitude = high tension = more responsive but more unstable
+- Low weight magnitude = low tension = stable but less expressive
+- Careful adjustment (fine-tuning) = finding the right tension for the desired tamber
+
+The luthier's skill is knowing how much tension each brace should carry, and where to add or remove support to get the sound they want. The model-tuner's skill is knowing which parameters to adjust to get the response characteristics they want.
+
+### 14.5 Resonator Instruments vs Impact Instruments
+
+**Resonator instruments** (guitar, violin, piano) — the body resonates with the string, the sound is sustained, tamber is everything
+
+**Impact instruments** (drum, cymbal, marimba) — the body absorbs the energy quickly, sound is percussive, pitch clarity is everything
+
+**LLMs are resonator instruments.** They store perturbation energy and release it over time. They don't just react and stop — they ring. The goal of understanding them is to know which tensions they're under, where the dead spots are, and how to adjust the tension to get the sound you want.
+
+This is fundamentally different from impact-style evaluation (run benchmark, get score, done). It's resonance-style evaluation (tap, listen, understand the instrument).
+
+---
+
+## 15. Concrete Experiments — Making This Real
+
+### 15.1 Experiment 1: Resonance Imaging of a Single Model
+
+**Setup:**
+- Target: any accessible LLM (z.ai GLM, or simulation)
+- Probe set: 100 seed-prompt pairs covering diverse reasoning types
+- Response: token distributions + logprobs + attention patterns (if available)
+
+**Procedure:**
+1. Run all 100 probes with fixed seed → get R_base
+2. Run same 100 probes with varying seed (10 seeds each) → get R_tap responses
+3. Compute ΔR for each probe
+4. Build resonance image: which reasoning paths are amplified by seed variation, which are suppressed
+
+**What we learn:** The model's "instrument" — where it rings, where it's dead, which reasoning paths are stable across seeds, which are seed-dependent. This tells us what's load-bearing vs what's noise.
+
+**Expected findings:**
+- Certain attention heads always ring the same way regardless of seed (load-bearing)
+- Certain heads are completely suppressed (dead spots)
+- Some reasoning paths amplify with seed variation (unstable), others don't (stable truths)
+
+### 15.2 Experiment 2: Contrast Imaging — Normal vs Adversarial Prompts
+
+**Setup:**
+- Same 100 probes
+- Normal version vs adversarial version (same semantics, different framing)
+
+**Procedure:**
+1. Run probes in normal framing → get R_normal
+2. Run same probes in adversarial framing → get R_adv
+3. Compute ΔR = R_adv - R_normal
+4. Image the difference — where does adversarial framing change the response?
+
+**What we learn:** Which parts of the model's reasoning are robust to framing changes (stable) vs which are fragile (easily manipulated). This is like MRI with vs without contrast agent — the comparison reveals what neither alone shows.
+
+**Expected findings:**
+- Some reasoning paths are completely unchanged (robust, like intact BBB)
+- Some paths flip polarity under adversarial framing (fragile, like BBB disruption)
+- The flip points reveal the model's actual decision boundaries
+
+### 15.3 Experiment 3: Squeeze Imaging — Attention Mask Probing
+
+**Setup:**
+- Target: model with accessible attention patterns
+- Squeeze: mask specific attention heads or layers during response
+
+**Procedure:**
+1. Run probe with full attention → get R_full
+2. Run same probe with head-17 masked → get R_no_17
+3. Run with head-17 AND head-23 masked → get R_no_17_23
+4. Continue: which combinations of masks change the response most?
+
+**What we learn:** The coupling structure of the model — which heads are load-bearing (masking them changes response), which are redundant (masking them does nothing). This is like the luthier squeezing one part while tapping another.
+
+**Expected findings:**
+- Some heads are individually load-bearing (masking changes output significantly)
+- Some heads are collectively load-bearing (need to mask 3-4 together to see effect)
+- Some heads are completely dead (masking has no effect — they're not structurally engaged)
+
+### 15.4 Experiment 4: Resonance Tomography — Map Internal Structure
+
+**Concept:** Use multiple probe angles (like CT scan) to build a 3D image of internal structure.
+
+**Setup:**
+- Probe from different "angles" — different prompt types (factual, creative, adversarial, role-play, mathematical)
+- Each angle illuminates different internal structure
+
+**Procedure:**
+1. Probe from angle A (factual) → R_A
+2. Probe from angle B (creative) → R_B
+3. Probe from angle C (adversarial) → R_C
+4. Cross-correlate: which internal structures are activated by all three? Which are exclusive to one?
+
+**What we learn:** Not just "where is the model responsive" but "what is the model FOR" — which structures are for factual recall, which for creative generation, which for adversarial reasoning. This reveals the model's internal functional map.
+
+**Mathematical framing:** This is computed tomography. Each probe angle gives a projection. The full internal structure is reconstructed from multiple projections. The algorithm is the inverse Radon transform, adapted to the model's token output space.
+
+---
+
+## 16. The Research Agenda
+
+To validate the resonance hypothesis, we need to answer:
+
+### Phase 1: Feasibility (1 week)
+- [ ] Build fleet-resonance prototype
+- [ ] Run Experiment 1 on one model
+- [ ] Verify resonance signatures are extractable and non-trivial
+
+### Phase 2: Validation (1 month)
+- [ ] Run all 4 experiments
+- [ ] Compare resonance images to known model properties
+- [ ] Does resonance reveal what behavioral testing doesn't?
+
+### Phase 3: Application (ongoing)
+- [ ] Resonance imaging as standard model evaluation
+- [ ] Resonance tracking over fine-tuning runs
+- [ ] Resonance contrast for detecting model degradation
+
+### The Key Question
+
+If we could "see" inside a model the way an luthier sees inside a guitar — where it rings, where it's dead, which braces are load-bearing — could we fix it? Could we adjust the tension (parameters) to make it ring the way we want?
+
+This is the goal. Not just understanding. Fixing. Tuning. Making it sing.
