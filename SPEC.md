@@ -206,6 +206,101 @@ This means the dissertation can reference the ArXiv paper and CC-by licensed imp
 
 ---
 
+## Phase D: Multi-Segment Beams with Joint Equilibrium
+
+### D.1 Physical Setup
+
+A multi-segment beam consists of N beam elements joined at N-1 interior joints, with boundary conditions prescribed at the two exterior nodes. Each interior joint j connects segment j (left) to segment j+1 (right). The full beam geometry is a sequence of control points:
+
+```
+P_0 --- segment 1 --- P_1 --- segment 2 --- P_2 --- ... --- P_{N-1} --- segment N --- P_N
+```
+
+Boundary conditions at exterior nodes P_0 and P_N are drawn from {fixed, free, pinned, roller}. Interior joints carry no separate boundary condition — their state is determined entirely by equilibrium requirements from adjacent segments.
+
+### D.2 Joint Equilibrium Conditions
+
+Each interior joint j must satisfy four compatibility conditions simultaneously:
+
+- **Force balance:** Internal axial force continuous — T_j^left = T_j^right
+- **Moment balance:** Bending moment continuous (rigid joint) — M_j^left = M_j^right
+- **Displacement compatibility:** No gap or overlap — y_j^left = y_j^right
+- **Slope compatibility:** Tangent continuity — theta_j^left = theta_j^right
+
+
+The four conditions form a vector equality in R^4:
+(T, M, y, theta)_j^left = (T, M, y, theta)_j^right
+
+### D.3 Sheaf Cohomology Framing
+
+This structure elevates Phase D beyond standard structural mechanics.
+
+**Local data.** At each interior joint j, define two local sections:
+- s_j^left = (T_j^left, M_j^left, y_j^left, theta_j^left) from segment j
+- s_j^right = (T_j^right, M_j^right, y_j^right, theta_j^right) from segment j+1
+
+**Global section condition.** Joint equilibrium s_j^left = s_j^right for all j = 1, ..., N-1 is precisely the requirement that all local sections glue to a global section of the segment sheaf.
+
+**Cohomology groups.**
+- H^0(S) = {global beam configurations} — admissible assembled beams
+- H^1(J) = cocycles / coboundaries — over-constrained joints detected as non-trivial cohomology
+
+**Rank argument.** The joint constraint system has 4(N-1) total scalar constraints (4 per interior joint). When the joint constraint matrix achieves full rank 4(N-1), the solution (if it exists) is unique.
+
+**Theorem D1.** For a beam with N segments, a global equilibrium configuration exists iff H^0(S) is non-empty.
+
+**Theorem D2.** If the joint constraint matrix has full rank 4(N-1), the solution is unique.
+
+**Theorem D3.** If H^1(J) is non-zero, the beam is over-constrained at the joints corresponding to the non-zero cohomology class; no solution exists without relaxing at least one joint condition.
+
+### D.4 Multi-Agent Formulation
+
+Each beam segment is owned by one specialized agent. Adjacent segment agents meet at their shared joint in a structured debate. Trust topology assigns weight w = 1.0 between adjacent segments and w = 0.3 between non-adjacent segments.
+
+**Consensus criterion at joint j.** Agreement when |T_j^left - T_j^right| < epsilon_T, |M_j^left - M_j^right| < epsilon_M, |y_j^left - y_j^right| < epsilon_y, |theta_j^left - theta_j^right| < epsilon_theta.
+
+The sheaf condition H^0(S) != empty is operationally realized as: all segment agents reach consensus simultaneously at all interior joints.
+
+
+### D.5 Algorithm
+
+For each segment i, solve the Euler elastica ODE via shooting with RK4 integration. The algorithm:
+
+1. **Initialize** — guess missing boundary conditions at each interior joint endpoint.
+2. **Shoot inward** — integrate each segment from its known exterior BC toward the nearest interior joint.
+3. **Collect residuals** — at each joint j, compute R_j = s_j^left - s_j^right.
+4. **Root-find** — adjust guessed joint values using Newton-Raphson on R in R^{4(N-1)}.
+5. **Iterate** until ||R_j|| < epsilon for all joints.
+
+
+This is a 4(N-1)-dimensional root-finding problem. Convergence is guaranteed when the joint constraint matrix has full rank (Theorem D2).
+
+### D.6 Test Cases
+
+- **D-T1:** Two-segment simply supported beam — uniform load q, length L per segment, total span 2L. Expect M_max = qL^2/8 at midspan.
+- **D-T2:** Two-segment cantilever with point load at midpoint joint.
+- **D-T3:** Three-segment continuous beam with intermediate roller supports.
+- **D-T4:** N-segment uniform beam — as N -> infinity, converges to single-beam solution.
+- **D-T5:** Over-constrained beam (Theorem D3 validation) — expects H^1 != 0 and no solution.
+
+### D.7 Implementation Tasks
+
+- [ ] Define Segment struct with left/right endpoint state vectors
+- [ ] Implement JointEquilibrium enforcing four compatibility conditions at interior joints
+- [ ] Write SheafCohomology module computing H^0 / H^1 of joint constraint sheaf
+- [ ] Implement MultiSegmentShootingSolver — shooting from both ends with joint residual accumulation
+- [ ] Implement SegmentDebateAgent — per-segment solver with trust-weighted debate at joints
+- [ ] Write test_two_segment_simply_supported (D-T1)
+- [ ] Write test_two_segment_cantilever_point_load (D-T2)
+- [ ] Write test_three_segment_continuous_roller (D-T3)
+- [ ] Write test_n_segment_convergence (D-T4)
+- [ ] Write test_over_constrained_joint (D-T5, expects failure)
+- [ ] Validate all Phase D solutions against EnergyMinimizationSolver baseline
+- [ ] Commit to SuperInstance/spline-physics
+
+---
+
+
 ## 8. Dependencies
 
 - `nalgebra` — Point2D vectors
