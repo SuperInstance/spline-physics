@@ -9,3 +9,4 @@ pub mod cross_section;
 pub mod solution;
 pub mod solvers;
 pub mod comparison;
+pub mod multi_agent;

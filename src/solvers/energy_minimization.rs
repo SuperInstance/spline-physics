@@ -125,7 +125,7 @@ impl EnergyMinimizationSolver {
         let delta = 0.1; // mm for numerical gradient
         let mut prev_energy = Self::compute_bezier_energy(p0, p1, p2, ei, 101);
 
-        for iteration in 0..self.max_iterations {
+        for _iteration in 0..self.max_iterations {
             let (df_dx, df_dy) = Self::compute_gradient(p0, p1, p2, ei, delta);
             let grad_mag = (df_dx * df_dx + df_dy * df_dy).sqrt();
 

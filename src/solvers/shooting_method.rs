@@ -207,7 +207,7 @@ impl ShootingMethodSolver {
         }
 
         let (x0, y0) = pins[0];
-        let (xmid, ymid) = pins[1];
+        let (_xmid, ymid) = pins[1];
         let (x2, y2) = pins[2];
 
         // Compute beam length L from endpoint positions
@@ -294,7 +294,7 @@ impl Solver for ShootingMethodSolver {
 
 #[cfg(test)]
 use super::*;
-use crate::material::{Cedar, PLA};
+use crate::material::PLA;
 use crate::cross_section::Rectangular;
 
 fn make_config_t2c() -> BeamConfig {
