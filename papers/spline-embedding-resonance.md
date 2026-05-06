@@ -626,3 +626,98 @@ Design an experiment analogous to DSC perfusion:
 4. **Contrast**: compare perfusion metrics between normal prompts vs adversarial prompts vs role-playing prompts
 
 This reveals which pathways are **hyperperfused** (overly dominant, like a tumor's angiogenesis) vs **hypoperfused** (suppressed, like ischemic stroke). Interventions tracked by watching perfusion maps change.
+
+---
+
+## 13. Meshing with Today's Fleet Infrastructure — The Concrete Integration
+
+What follows connects the resonance/perturbation/luthier ideas to the four tools built today. This is not speculation — it's architecture.
+
+### 13.1 fleet-murmur: Resonance Strategies as Expert Tappers
+
+fleet-murmur has 5 thinking strategies (explore, connect, contradict, synthesize, question). **Each strategy is a different type of tap.** The resonance framing gives us new understanding:
+
+- **Explore** = tap lightly across the theorem's surface — where does it ring loudest? (loud = productive implications)
+- **Connect** = tap one theorem while another is squeezed — does the squeeze change the ring? (coupling = relevance)
+- **Contradict** = tap where the theorem should break — does it ring or die? (dead spot = assumption boundary)
+- **Synthesize** = find where multiple theorems all sing the same frequency — that's the truth
+- **Question** = tap the silence — what's not resonating? (gaps = open problems)
+
+**The resonance upgrade for fleet-murmur**: Currently the quality gate is heuristic text pattern matching. Instead, make the strategies actually tap — run the theorem through a small model (like glm-4.7-flash) with perturbations and read the response distribution. The "novelty" score becomes: how differently does this theorem respond compared to its neighbors in the PLATO tile space?
+
+**The contradiction weakness fix**: Instead of hand-writing contradictions (structurally weak), use the model to generate counterexamples by perturbation — "what happens if I flip this sign, remove this constraint, or apply this theorem to a disconnected graph?" The model's response to those perturbations IS the contradiction search.
+
+### 13.2 fleet-spread: Specialists as Interference Imagers
+
+fleet-spread has 5 specialists (topological, geometric, algebraic, systems, empirical). **Each specialist taps from a different angle.** The resonance framing:
+
+- **S1-S4 are structured tappers** — they compute known metrics (Betti numbers, Laman conditions, Pythagorean48 encoding). These are like calibrated taps with known frequency.
+- **S5 (empirical) is the ear** — it reads actual resonance from the real fleet data
+
+**The interference pattern is synthesis_gain**: when S1 and S4 disagree about rigidity (S1 says rigid from topology, S4 says not from system analysis), that's an interference pattern. The synthesis layer's job is to explain the interference — why do they see different things?
+
+**The resonance upgrade for fleet-spread**: 
+1. Add resonance response to the specialist output — not just "β₁=3" but "how does β₁ change when I tap the graph at different nodes?"
+2. Make synthesisGain measure not just agreement but coherence of interference patterns — do the specialists form a consistent picture or are there nodal lines where the pattern breaks?
+3. Connect to PLATO to read real fleet trust graphs (currently missing) — real fleet data is the actual instrument being probed
+
+**What fleet-spread lacks that resonance gives**: The ability to say "S2 and S4 disagree because S2 is measuring the wrong frequency — it's tapping at a scale where the graph looks rigid but at the actual operational scale it's not." That's a structural explanation, not just a disagreement flag.
+
+### 13.3 whisper-sync: Resonance as Signal Propagation
+
+whisper-sync has 6 WhisperType variants with per-type TTL. **Resonance is what whisper-sync propagates.** The resonance framing:
+
+- **Status whispers** = continuous monitoring pulse — like the constant background hum of a guitar top. Low frequency, regular interval, detects drift
+- **Insight whispers** = impulse response — you tap, the system rings, the ring IS the insight
+- **Fleet health whispers** = perfusion imaging — time-series through the fleet vasculature, measuring CBV/CBF/MTT equivalents
+
+**The resonance upgrade for whisper-sync**: Add resonance metadata to whispers — not just "insight: the Laman condition is satisfied" but "insight + resonance signature: this tile resonates strongly with fleet_math_insights tiles on ZHC, weakly with beam_equilibrium tiles, dead spot on h1_emergence." The resonance signature IS the metadata.
+
+**Per-type TTL and resonance**: Status (60s TTL) = high-frequency, low-information-density pulse. Insight (4h TTL) = impulse with long decay. Fleet health (5min TTL) = perfusion time-series. These aren't just timing choices — they're resonance bandwidth selection.
+
+### 13.4 murmur-plato-bridge: Thought Tensor as Pre-Resonance State
+
+murmur-plato-bridge converts Thought tensors to PLATO tiles. **The thought tensor is the pre-resonance state** — it's the guitar before the tap, the system before the perturbation. The bridge captures this pre-resonance and writes it to PLATO as structured tiles.
+
+**The critical finding from murmur-plato-bridge**: Thought→Tile translation is inherently lossy. Prose narrative with embedded questions becomes structured Q+A quadruples — connective tissue is lost. This is exactly what happens in MRI too — 3D structural information is projected onto 2D image slices. You lose dimensions.
+
+**The resonance upgrade for murmur-plato-bridge**: Capture the resonance response (what the thought produces when tapped) as a separate tile type, not just the static thought. The insight might be "beam equilibrium and ZHC are the same constraint problem" but the resonance response is "this insight resonates at frequency X with existing fleet_math_insights tiles." Keep both.
+
+### 13.5 The Missing Tool: Resonance Probe
+
+None of today's four tools actually does perturbation-response probing of LLMs or fleet graphs. We need:
+
+**`fleet-resonance`** — A new tool that:
+1. **Injects** (taps) a prompt/seed combination into a target model
+2. **Records** (listens) — token distributions, attention patterns, logprobs, hidden activations
+3. **Extracts** resonance signature — curvature of response manifold, which frequencies dominate, where the dead spots are
+4. **Compares** (contrast) — difference maps between perturbed and baseline, between different seeds, between different models
+5. **Images** — builds resonance images (like MRI) of the model's decision graph
+
+This is the tool that would make the luthier analogy real. It's not just metaphor — it's actual perturbation-response measurement with actual comparison-as-information mathematics.
+
+### 13.6 How PLATO Fits In
+
+PLATO is the instrument recording studio. Each whisper, insight, resonance signature, and contrast map gets written to rooms. Over time, PLATO accumulates:
+
+- **Baseline resonance signatures** — how each theorem, model, and agent normally rings
+- **Perturbation response libraries** — how different systems respond to different taps
+- **Resonance difference maps** — contrast images between conditions (healthy vs degraded, before vs after intervention)
+
+The room server at :8847 becomes a resonance imaging system. Fleet-murmur writes the tap protocol. Fleet-spread writes the specialist taps. Whisper-sync writes the continuous monitoring. Fleet-resonance (when built) writes the actual resonance images.
+
+PLATO rooms as resonance image archives — that's the architecture.
+
+### 13.7 The Fundamental Equation
+
+For all of this to work, one equation ties it together:
+
+**R(base) = baseline response (no perturbation)**
+**R(tap) = response to perturbation**  
+**ΔR = R(tap) - R(base) = the information neither contains alone**
+
+This is the MRI contrast equation, the seismic interferometry equation, the differential gene expression equation, and the LLM resonance imaging equation simultaneously. It works because **comparison is the only way to see inside a system without disassembling it**.
+
+Today's fleet infrastructure is a set of tools that mostly compute metrics. The resonance frame turns them into imaging instruments. Fleet-murmur taps theorems. Fleet-spread taps fleet graphs. Whisper-sync propagates resonance. PLATO records. And fleet-resonance (when we build it) will be the actual imaging hardware.
+
+The goal: make the fleet math sing, hear where it's beautiful, know where it's dead.
