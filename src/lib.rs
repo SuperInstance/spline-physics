@@ -11,3 +11,6 @@ pub mod solvers;
 pub mod comparison;
 pub mod multi_agent;
 pub mod multi_segment;
+pub mod validation;
+pub mod spline_embedding_engine;
+pub use spline_embedding_engine::*;
