@@ -7,6 +7,7 @@ pub mod agent;
 pub mod consensus;
 pub mod debate;
 pub mod segment;
+pub mod joint_debate;
 
 pub use agent::{Agent, AgentRole};
 pub use consensus::{check_consensus, measure_agreement, ConsensusResult, ConsensusState};
