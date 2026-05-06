@@ -5,7 +5,7 @@
 
 ## Abstract
 
-We present a multi-agent model of beam equilibrium where agents with different computational priors—gradient descent, ODE integration, and analytical reference—argue to consensus on the shape of a loaded beam. The debate dynamics follow a spring-damper model parameterized by a trust topology, and convergence to the physically correct shape is proven to depend on the cohomology of that topology. We show that beam equilibrium is, mathematically, a consensus problem: the same shape emerges from disagreement when trust relationships form a connected graph. This connects the physics of elastic beams to the mathematics of sheaf cohomology, non-cooperative game theory, and fleet coordination.
+We present a multi-agent model of beam equilibrium where agents with different computational priors—gradient descent, ODE integration, and analytical reference—argue to consensus on the shape of a loaded beam. The debate dynamics follow a spring-damper model parameterized by a trust topology, and convergence to the physically correct shape is proven to depend on the cohomology of that topology. We show that beam equilibrium is, mathematically, a consensus problem: the same shape emerges from disagreement when trust relationships form a connected graph. This connects the physics of elastic beams to the mathematics of cycle space cohomology and graph theory, non-cooperative game theory, and fleet coordination.
 
 **Key contributions:**
 1. Formal equivalence between beam equilibrium and multi-agent consensus
@@ -71,7 +71,7 @@ This is literally a spring-mass system where each "mass" is a belief and "spring
 
 ---
 
-## 3. Trust Topology → Sheaf Cohomology
+## 3. Trust Topology → Cycle Space
 
 ### 3.1 The Trust Graph
 
@@ -83,7 +83,7 @@ SpilingAgent → Architect (w = 1.3)
 QualityAgent → everyone (w = 0.4, skeptic)
 ```
 
-### 3.2 Sheaf Theory Formulation
+### 3.2 Graph Cohomology Formulation
 
 Define the constraint sheaf F on the beam graph:
 - **Sections at pin i:** Possible y-positions consistent with local equilibrium
@@ -178,7 +178,7 @@ For each round:
 
 The same H¹ cohomology guarantees beam consensus and fleet consensus in the Zero Holonomy Consensus (ZHC) protocol. In ZHC, holonomy around a cycle of agents is zero (H¹ trivial) ↔ fleet converges. The beam's debate dynamics and the fleet's ZHC protocol are the same structure applied to different data types (geometric shapes vs. semantic hypervectors).
 
-### 6.2 Sheaf Cohomology → Multi-Agent Coordination
+### 6.2 Cycle Space → Multi-Agent Coordination
 
 The constraint sheaf on a beam graph and on a fleet's communication graph are mathematically identical. The cohomology describes the same phenomenon: whether local constraint satisfaction extends to global constraint satisfaction.
 

@@ -7,7 +7,7 @@
 
 **Central Question:** Can a multi-agent debate system, where agents with different computational priors argue about beam equilibrium, converge to the physically correct answer — and can we prove why?
 
-**Dissertation Hypothesis:** The beam equilibrium shape is a **consensus point** in belief space, where agents with different priors (energy minimization, ODE solving, analytical reference) all agree. The debate dynamics are governed by a **trust topology** that maps to sheaf cohomology, and convergence is guaranteed for beam topologies with H¹ ≅ ℤ.
+**Dissertation Hypothesis:** The beam equilibrium shape is a **consensus point** in belief space, where agents with different priors (energy minimization, ODE solving, analytical reference) all agree. The debate dynamics are governed by a **trust topology**. Convergence depends on the cycle space dimension β₁ = E-V+1, with debate converging when the trust update is a contraction mapping.
 
 ---
 
@@ -187,7 +187,7 @@ This means the dissertation can reference the ArXiv paper and CC-by licensed imp
 
 1. **Trust Topology Convergence Theorem** — "For a beam with N pins, if the trust graph is connected, debate converges in O(log(1/ε)) rounds to within tolerance ε."
 
-2. **Sheaf Cohomology Bound** — "The number of rounds to consensus is ≤ the first Betti number β₁ of the trust topology graph."
+2. **Cycle Space Bound (HYPOTHESIS)** — "The number of rounds to consensus is conjectured to be bounded by β₁ for specific trust update dynamics. This bound is not proved and requires further analysis."
 
 3. **Multi-Segment Continuity Lemma** — "A solution exists for an N-pin beam iff all adjacent segment pairs agree on shared pins."
 
@@ -231,7 +231,7 @@ Each interior joint j must satisfy four compatibility conditions simultaneously:
 The four conditions form a vector equality in R^4:
 (T, M, y, theta)_j^left = (T, M, y, theta)_j^right
 
-### D.3 Sheaf Cohomology Framing
+### D.3 Cycle Space Framing
 
 This structure elevates Phase D beyond standard structural mechanics.
 
@@ -239,7 +239,7 @@ This structure elevates Phase D beyond standard structural mechanics.
 - s_j^left = (T_j^left, M_j^left, y_j^left, theta_j^left) from segment j
 - s_j^right = (T_j^right, M_j^right, y_j^right, theta_j^right) from segment j+1
 
-**Global section condition.** Joint equilibrium s_j^left = s_j^right for all j = 1, ..., N-1 is precisely the requirement that all local sections glue to a global section of the segment sheaf.
+**Global section condition (sheaf formulation):** Joint equilibrium s_j^left = s_j^right for all j = 1, ..., N-1 is precisely the requirement that all local sections glue to a global section of the segment sheaf.
 
 **Cohomology groups.**
 - H^0(S) = {global beam configurations} — admissible assembled beams
@@ -259,7 +259,7 @@ Each beam segment is owned by one specialized agent. Adjacent segment agents mee
 
 **Consensus criterion at joint j.** Agreement when |T_j^left - T_j^right| < epsilon_T, |M_j^left - M_j^right| < epsilon_M, |y_j^left - y_j^right| < epsilon_y, |theta_j^left - theta_j^right| < epsilon_theta.
 
-The sheaf condition H^0(S) != empty is operationally realized as: all segment agents reach consensus simultaneously at all interior joints.
+The global section condition (H⁰ ≠ ∅) is operationally realized as: all segment agents reach consensus simultaneously at all interior joints.
 
 
 ### D.5 Algorithm
@@ -287,7 +287,7 @@ This is a 4(N-1)-dimensional root-finding problem. Convergence is guaranteed whe
 
 - [ ] Define Segment struct with left/right endpoint state vectors
 - [ ] Implement JointEquilibrium enforcing four compatibility conditions at interior joints
-- [ ] Write SheafCohomology module computing H^0 / H^1 of joint constraint sheaf
+- [ ] Write Cohomology module computing β₀, β₁ of joint constraint graph
 - [ ] Implement MultiSegmentShootingSolver — shooting from both ends with joint residual accumulation
 - [ ] Implement SegmentDebateAgent — per-segment solver with trust-weighted debate at joints
 - [ ] Write test_two_segment_simply_supported (D-T1)
